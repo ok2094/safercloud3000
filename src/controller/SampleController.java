@@ -9,9 +9,7 @@ public class SampleController {
     private Button btnTest;
 
     @FXML
-    private void btnTestAction() throws Exception {
+    private void btnTestAction() {
         btnTest.setText("NANI?!");
-        KeyGenerator kg = new KeyGenerator();
-        kg.generateKey();
     }
 }
