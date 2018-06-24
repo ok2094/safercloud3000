@@ -8,7 +8,7 @@ import java.security.Key;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-public class CryptoUtils implements CryptoUtilsInterface{
+public class CryptoUtils {
 	private static final String Algorithm = "AES", Transformation = "AES";
 
 	public static void encrypt(String key, File inputFile, File outputFile) throws Exception {
@@ -28,7 +28,9 @@ public class CryptoUtils implements CryptoUtilsInterface{
 		byte[] inputBytes = new byte[(int) inputFile.length()];
 		inStream.read(inputBytes);
 
-		byte[] outputBytes = cipher.doFinal(inputBytes);
+		byte[] outputBytes = cipher.doFinal(inputBytes );
+		
+		
 		FileOutputStream outStream = new FileOutputStream(outputFile);
 		outStream.write(outputBytes);
 
