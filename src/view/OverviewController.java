@@ -10,6 +10,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.Connection;
+import model.ConnectionInterface;
 
 public class OverviewController {
 	final FileChooser fc = new FileChooser();
@@ -28,9 +30,12 @@ public class OverviewController {
 		alert.setContentText("Schlüssel Ausgewählt! \n weiter um Datei auszuwählen");
 		alert.showAndWait();
 		File fileToUpload = fc.showOpenDialog(stage);
-		File outputFile=null;
+		File outputFile=new File("tempUpload.txt");
 		CryptoUtils cu = new CryptoUtils();
-		cu.encrypt(keyString, fileToUpload, outputFile);
+		File encrypted=cu.encrypt(keyString, fileToUpload, outputFile);
+		ConnectionInterface c = new Connection();
+		c.upload(encrypted);
+		
 		
 	}
 	

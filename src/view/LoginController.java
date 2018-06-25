@@ -28,7 +28,7 @@ public class LoginController {
 	private PasswordField password;
 
 	@FXML
-	private void loginAction() throws IOException {
+	private void loginAction() throws Exception {
 
 		un = userName.getText();
 		hashOfPW = password.getText().hashCode();
