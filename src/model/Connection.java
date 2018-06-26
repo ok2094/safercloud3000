@@ -24,50 +24,24 @@ public class Connection implements ConnectionInterface {
 
 	@Override
 	public void upload(File fileToUpload) throws Exception {
-//		String charset = "UTF-8";
-//		String boundary = Long.toHexString(System.currentTimeMillis());
-//		String CRLF = "\r\n";
-//
-//		URLConnection connection = new URL(url + "/api/file").openConnection();
-//		connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-//		connection.setDoOutput(true);
-//		OutputStream output = connection.getOutputStream();
-//		PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);
-//		
-//		
-//		writer.append("--" + boundary).append(CRLF);
-//		writer.append("Content-Disposition: form-data; name=\"textFile\"; filename=\"" + fileToUpload + "\"")
-//				.append(CRLF);
-//		writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF); // Text file itself must be saved in
-//																					// this charset!
-//		writer.append(CRLF).flush();
-//		Files.copy(fileToUpload.toPath(), output);
-//		output.flush(); // Important before continuing with writer!
-//		writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
-//		int responseCode = ((HttpURLConnection) connection).getResponseCode();
-//		System.out.println(responseCode); 
-		
-		  final MediaType MEDIA_TYPE = MediaType.parse("multipart/form-data");
 
-		  final OkHttpClient client = new OkHttpClient();
-		  
-		  RequestBody requestBody = new MultipartBody.Builder()
-			        .setType(MultipartBody.FORM)
-			        .addFormDataPart("ufile", "logo-square.png", RequestBody.create(MEDIA_TYPE, new File("tempUpload.txt")))
-			        .build();
+		final MediaType MEDIA_TYPE = MediaType.parse("multipart/form-data");
 
-			    Request request = new Request.Builder()
-			        .header("token", token)
-			        .url(url + "/api/file")
-			        .post(requestBody)
-			        .build();
+		final OkHttpClient client = new OkHttpClient();
 
-			    try (Response response = client.newCall(request).execute()) {
-			      if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+		RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+				.addFormDataPart("ufile", "logo-square.png", RequestBody.create(MEDIA_TYPE, new File("tempUpload.txt")))
+				.build();
 
-			      System.out.println(response.body().string());
-			    }
-		 
+		Request request = new Request.Builder().header("token", token).url(url + "/api/file").post(requestBody).build();
+
+		try (Response response = client.newCall(request).execute()) {
+			if (!response.isSuccessful())
+				throw new IOException("Unexpected code " + response);
+
+			System.out.println(response.body().string());
+		}
+
 	}
 
 	@Override
@@ -77,8 +51,18 @@ public class Connection implements ConnectionInterface {
 	}
 
 	@Override
-	public void downloadData() {
-		// TODO Auto-generated method stub
+	public JSONObject downloadData() throws IOException {
+		URL serverConnection = new URL(url + "/api/file/list");
+		HttpURLConnection con = (HttpURLConnection) serverConnection.openConnection();
+		System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+		con.setRequestProperty("origin", "safercloudclient");
+		con.setRequestMethod("GET");
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		JSONController jc = new JSONController();
+		String jsonText = jc.readAll(in);
+		JSONObject json = new JSONObject(jsonText);
+
+		return json;
 
 	}
 
@@ -101,7 +85,7 @@ public class Connection implements ConnectionInterface {
 		JSONController jc = new JSONController();
 		String jsonText = jc.readAll(in);
 		JSONObject json = new JSONObject(jsonText);
-		
+
 		if (json.getString("status").equalsIgnoreCase("created")) {
 			return true;
 		}

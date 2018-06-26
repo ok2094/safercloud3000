@@ -1,6 +1,9 @@
 package view;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.json.JSONObject;
 
 import controller.CryptoUtils;
 import controller.KeyGenerator;
@@ -44,6 +47,22 @@ public class OverviewController {
 		Stage stage2 = new Stage();
 		File key = fc.showOpenDialog(stage2);
 		
+		
+	}
+	@FXML
+	private void refreshAction() {
+		ConnectionInterface c = new Connection();
+		try {
+			JSONObject list = new JSONObject(c.downloadData());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	@FXML
+	private void deleteAction() {
 		
 	}
 

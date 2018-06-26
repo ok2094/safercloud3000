@@ -30,9 +30,9 @@
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="upload" mnemonicParsing="false" onAction="#uploadAction" text="Heraufladen" />
-            <Button fx:id="download" mnemonicParsing="false" text="Herunterladen" />
-            <Button fx:id="delete" mnemonicParsing="false" text="Löschen" />
-            <Button fx:id="refresh" mnemonicParsing="false" text="Aktualisieren" />
+            <Button fx:id="download" mnemonicParsing="false" onAction ="#downloadAction"text="Herunterladen" />
+            <Button fx:id="delete" mnemonicParsing="false" onAction ="#deleteAction" text="Löschen" />
+            <Button fx:id="refresh" mnemonicParsing="false" onAction="#refreshAction" text="Aktualisieren" />
          </children>
       </HBox>
    </bottom>
