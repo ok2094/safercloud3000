@@ -62,8 +62,9 @@ public class OverviewController {
 		
 	}
 	@FXML
-	private void deleteAction() {
-		
+	private void deleteAction() throws IOException {
+		ConnectionInterface c = new Connection();
+		c.delete();
 	}
 
 }
